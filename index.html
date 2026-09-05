@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Farrux &amp; Sevora — To'y taklifnomasi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --wine:#6E1F3B;
+    --rose:#C6577A;
+    --rose-mid:#E893AA;
+    --rose-light:#F8D9E2;
+    --blush:#FFF1F5;
+    --gold:#C79A56;
+    --charcoal:#3A2530;
+    --charcoal-soft:#7A6169;
+    --white:#FFFFFF;
+    --glass: rgba(255,255,255,0.88);
+    --glass-line: rgba(198,87,122,0.25);
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+  html{ scroll-behavior:auto; }
+
+  body{
+    font-family:'Outfit', sans-serif;
+    color: var(--charcoal);
+    background: var(--wine);
+    overflow-x:hidden;
+    min-height:100vh;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
+  }
+
+  a{ color:inherit; text-decoration:none; }
+
+  /* ---------------- FIXED VIDEO BACKGROUND ---------------- */
+  .bg-video-wrap{
+    position:fixed; inset:0; width:100%; height:100%;
+    z-index:0; overflow:hidden;
+    background: linear-gradient(160deg, #4A1329 0%, #6E1F3B 55%, #8C2A49 100%);
+  }
+  .bg-video-wrap video{
+    position:absolute; top:50%; left:50%;
+    width:100%; height:100%;
+    min-width:100%; min-height:100%;
+    object-fit:cover;
+    transform: translate(-50%,-50%);
+    opacity: 0.55;
+  }
+  .bg-tint{
+    position:fixed; inset:0; z-index:1;
+    background:
+      radial-gradient(circle at 50% 0%, rgba(255,225,235,0.16) 0%, transparent 55%),
+      linear-gradient(180deg, rgba(60,14,34,0.35) 0%, rgba(255,241,245,0.86) 34%, rgba(255,241,245,0.96) 100%);
+  }
+
+  #petals{ position:fixed; inset:0; z-index:2; pointer-events:none; width:100%; height:100%; }
+
+  /* ---------------- LOCK / HERO SCREEN ---------------- */
+  .lock-screen{
+    position:fixed; inset:0; z-index:600;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding: 40px 26px;
+    color:#fff;
+    transition: opacity .7s ease, visibility .7s ease;
+  }
+  .lock-screen.hidden{ opacity:0; visibility:hidden; pointer-events:none; }
+
+  .lock-eyebrow{
+    font-size:11.5px; letter-spacing:4px; color:#F3D9E2; opacity:.85; margin-bottom:22px;
+  }
+
+  .lock-names{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600; font-size:46px; line-height:1.1;
+    text-shadow: 0 4px 24px rgba(0,0,0,0.35);
+  }
+  .lock-amp{
+    font-style:italic; color: var(--rose-light); font-size:0.6em; margin:0 6px;
+  }
+
+  .lock-date{
+    margin-top:16px; font-size:14px; letter-spacing:5px; color:#F6E3E9;
+  }
+
+  .lock-quote{
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic; font-size:17px; line-height:1.6;
+    color:#F6E6EC; max-width:290px; margin: 26px auto 0;
+  }
+
+  .slide-track{
+    position:relative;
+    width: 260px; height:56px;
+    margin-top:38px;
+    border-radius:32px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.35);
+    display:flex; align-items:center;
+    overflow:hidden;
+    cursor:pointer;
+  }
+  .slide-label{
+    width:100%; text-align:center;
+    font-size:12.5px; letter-spacing:2px; color:#fff; opacity:.9;
+    pointer-events:none;
+  }
+  .slide-handle{
+    position:absolute; left:4px; top:4px;
+    width:48px; height:48px; border-radius:50%;
+    background: linear-gradient(135deg,#fff 0%, var(--rose-light) 100%);
+    display:flex; align-items:center; justify-content:center;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+    touch-action:none;
+  }
+  .slide-handle svg{ width:20px; height:20px; fill:var(--wine); }
+  .slide-glow{
+    position:absolute; inset:0; border-radius:32px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.35), transparent 40%);
+    animation: shimmer 2.4s infinite;
+  }
+  @keyframes shimmer{
+    0%{ transform:translateX(-100%); }
+    100%{ transform:translateX(300%); }
+  }
+
+  .lock-hint{
+    margin-top:14px; font-size:11.5px; color:#EBCBD7; opacity:.8;
+  }
+
+  /* ---------------- PAGE ---------------- */
+  main.page{
+    position:relative; z-index:5;
+    max-width: 480px; margin:0 auto;
+    padding: 26px 16px 60px;
+    opacity:0;
+  }
+  main.page.show{
+    opacity:1;
+    transition: opacity .8s ease;
+  }
+
+  section.panel{
+    background: var(--glass);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--glass-line);
+    border-radius: 26px;
+    padding: 30px 24px;
+    margin-bottom: 18px;
+    text-align:center;
+    box-shadow: 0 18px 40px rgba(110,31,59,0.16);
+  }
+
+  .eyebrow-sm{
+    font-size:12px; letter-spacing:2px; color:var(--rose); margin-bottom:10px;
+  }
+
+  .panel h2{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600; font-size:26px; color:var(--wine);
+    margin-bottom: 14px;
+  }
+
+  .panel p, .panel .body-text{
+    font-size:14.5px; line-height:1.7; color:var(--charcoal-soft);
+  }
+
+  /* welcome image frame */
+  .welcome-photo{
+    width: 78%;
+    margin: 0 auto 20px;
+    border-radius: 999px 999px 16px 16px;
+    overflow:hidden;
+    border: 3px solid #fff;
+    box-shadow: 0 14px 30px rgba(110,31,59,0.22);
+  }
+  .welcome-photo img{
+    width:100%; display:block; aspect-ratio: 3/4; object-fit:cover; object-position: 40% 30%;
+  }
+
+  .dove-divider{
+    display:block; width:64px; margin:0 auto 16px; opacity:.9;
+  }
+
+  /* ---------------- COUNTDOWN ---------------- */
+  .countdown-row{
+    display:flex; justify-content:center; gap:10px; margin-top:18px; flex-wrap:wrap;
+  }
+  .count-circle{
+    width:64px; height:64px; border-radius:50%;
+    border: 1.6px solid var(--rose-mid);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    background: #fff;
+  }
+  .count-val{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:700; font-size:19px; color:var(--wine);
+    font-variant-numeric: tabular-nums;
+  }
+  .count-lbl{ font-size:9px; color:var(--charcoal-soft); margin-top:1px; }
+
+  .event-owner{
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic; font-size:20px; color:var(--rose); margin: 4px 0 18px;
+  }
+
+  .divider-line{
+    width:60px; height:1px; background: var(--glass-line); margin: 18px auto;
+  }
+
+  /* ---------------- DETAILS / LOCATION ---------------- */
+  .detail-label{ font-size:11.5px; letter-spacing:1.5px; color:var(--charcoal-soft); margin-bottom:4px; }
+  .detail-value{ font-size:17px; color:var(--wine); font-weight:500; margin-bottom:18px; }
+
+  .pill-btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding: 13px 26px;
+    border-radius:50px;
+    border: 1.4px solid var(--rose);
+    color: var(--wine);
+    font-size:13px; letter-spacing:1px;
+    background:transparent;
+    cursor:pointer;
+  }
+  .pill-btn svg{ width:15px; height:15px; stroke:var(--wine); fill:none; stroke-width:1.8; }
+
+  .solid-btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    width:100%;
+    padding: 15px;
+    border-radius:50px;
+    border:none;
+    background: linear-gradient(135deg, var(--rose) 0%, var(--wine) 100%);
+    color:#fff;
+    font-size:14px; letter-spacing:.5px; font-weight:500;
+    cursor:pointer;
+    box-shadow: 0 12px 24px rgba(110,31,59,0.3);
+  }
+  .solid-btn:active{ transform: scale(.98); }
+
+  /* ---------------- TIMELINE ---------------- */
+  .timeline-list{ text-align:left; margin-top:20px; position:relative; padding-left:24px; }
+  .timeline-list::before{ content:""; position:absolute; left:5px; top:6px; bottom:6px; width:1px; background:var(--glass-line); }
+  .tl-item{ position:relative; padding-bottom:24px; }
+  .tl-item:last-child{ padding-bottom:0; }
+  .tl-item::before{
+    content:""; position:absolute; left:-24px; top:4px; width:9px; height:9px; border-radius:50%;
+    background: var(--rose); box-shadow: 0 0 0 4px var(--rose-light);
+  }
+  .tl-time{ font-family:'Cormorant Garamond', serif; font-weight:600; font-size:18px; color:var(--wine); }
+  .tl-text{ font-size:13px; color:var(--charcoal-soft); margin-top:2px; }
+
+  /* ---------------- RSVP ---------------- */
+  .rsvp-options{ text-align:left; margin: 18px 0; }
+  .rsvp-opt{
+    display:flex; align-items:center; gap:12px;
+    padding: 13px 16px; margin-bottom:10px;
+    border-radius:16px;
+    background: var(--rose-light);
+    cursor:pointer;
+  }
+  .rsvp-opt input{ accent-color: var(--wine); width:16px; height:16px; }
+  .rsvp-opt span{ font-size:13.5px; color:var(--wine); }
+
+  /* ---------------- WISH FORM ---------------- */
+  textarea.wish-input{
+    width:100%; min-height:90px; margin-top:14px;
+    border-radius:16px; border: 1.4px solid var(--glass-line);
+    padding: 14px; font-family:'Outfit', sans-serif; font-size:13.5px; color:var(--charcoal);
+    background:#fff; resize:vertical;
+  }
+  textarea.wish-input:focus{ outline:none; border-color:var(--rose); }
+
+  /* ---------------- SHARE / FOOTER ---------------- */
+  .rings-svg{ width:70px; margin: 0 auto 14px; display:block; }
+
+  .credit{
+    text-align:center; font-size:11px; color: var(--charcoal-soft);
+    margin-top: 10px; opacity:.8;
+  }
+
+  /* ---------------- MUSIC BUTTON ---------------- */
+  .music-btn{
+    position: fixed; bottom:20px; right:20px; z-index:300;
+    width:48px; height:48px; border-radius:50%; border:none;
+    background: linear-gradient(135deg, var(--rose) 0%, var(--wine) 100%);
+    box-shadow: 0 10px 22px rgba(110,31,59,0.4);
+    display:flex; align-items:center; justify-content:center; cursor:pointer;
+  }
+  .music-btn svg{ width:18px; height:18px; fill:#fff; }
+  .music-btn .icon-pause{ display:none; }
+  .music-btn.playing .icon-play{ display:none; }
+  .music-btn.playing .icon-pause{ display:block; }
+
+  @media (min-width:480px){
+    main.page{ padding-top: 40px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Background video (Mixkit free stock footage, muted, ambient) -->
+<div class="bg-video-wrap">
+  <video autoplay muted loop playsinline preload="auto" poster="1788617540443_image.png">
+    <source src="https://assets.mixkit.co/1z5vjht4gunh9gm30lc8kov1cydk" type="video/mp4">
+  </video>
+</div>
+<div class="bg-tint"></div>
+<canvas id="petals"></canvas>
+
+<audio id="bgAudio" loop preload="auto">
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<!-- ================= LOCK SCREEN ================= -->
+<div class="lock-screen" id="lockScreen">
+  <div class="lock-eyebrow">SIZGA TAKLIFNOMA YUBORILDI</div>
+  <div class="lock-names" id="lockNames">Farrux<span class="lock-amp">&amp;</span>Sevora</div>
+  <div class="lock-date" id="lockDate">15 · 10 · 2026</div>
+  <p class="lock-quote">Taqdir ikki qalbni bir-biriga yetaklaganida, shu yerdan eng go'zal hikoya boshlanadi.</p>
+
+  <div class="slide-track" id="slideTrack">
+    <div class="slide-glow"></div>
+    <div class="slide-label">Ochish uchun suring »</div>
+    <div class="slide-handle" id="slideHandle">
+      <svg viewBox="0 0 24 24"><path d="M12 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm6-7V8a6 6 0 1 0-12 0v2H5v11h14V10h-1Zm-9-2a3 3 0 1 1 6 0v2H9V8Z"/></svg>
+    </div>
+  </div>
+  <div class="lock-hint">Musiqa va animatsiyalarni ko'rish uchun suring</div>
+</div>
+
+<!-- ================= MAIN PAGE ================= -->
+<main class="page" id="page">
+
+  <!-- Welcome -->
+  <section class="panel">
+    <div class="welcome-photo">
+      <img src="1788617540443_image.png" alt="Farrux va Sevora">
+    </div>
+    <div class="eyebrow-sm">AZIZ MEHMON</div>
+    <h2>Sizni taklif qilamiz</h2>
+    <p>Hayotimizning eng baxtli kunlaridan birida yoningizda bo'lishingizni va quvonchimizga sherik bo'lishingizni istaymiz. Ushbu maxsus kechada sizni ko'rishdan behad mamnun bo'lamiz.</p>
+  </section>
+
+  <!-- To'y haqida + Countdown -->
+  <section class="panel">
+    <svg class="dove-divider" viewBox="0 0 100 44" xmlns="http://www.w3.org/2000/svg">
+      <path d="M50 40 C40 20 20 14 8 18 C18 22 26 28 30 36" fill="none" stroke="#C79A56" stroke-width="1.4"/>
+      <path d="M50 40 C60 20 80 14 92 18 C82 22 74 28 70 36" fill="none" stroke="#C79A56" stroke-width="1.4"/>
+      <circle cx="50" cy="10" r="5" fill="#C6577A"/>
+      <path d="M50 10 C46 4 40 3 36 6 C40 8 44 10 47 13Z" fill="#E893AA"/>
+      <path d="M50 10 C54 4 60 3 64 6 C60 8 56 10 53 13Z" fill="#E893AA"/>
+    </svg>
+    <div class="eyebrow-sm">TO'Y HAQIDA</div>
+    <h2>To'y egalari</h2>
+    <div class="event-owner" id="ownerLine">Farrux &amp; Sevora</div>
+    <div class="detail-label">BOSHLANISH VAQTI</div>
+    <div class="detail-value" id="dateTimeDisplay">15.10.2026 / soat 18:00</div>
+    <div class="divider-line"></div>
+    <div class="detail-label" style="margin-bottom:12px;">TO'Y BOSHLANISHIGA QOLDI</div>
+    <div class="countdown-row">
+      <div class="count-circle"><div class="count-val" id="days">00</div><div class="count-lbl">kun</div></div>
+      <div class="count-circle"><div class="count-val" id="hours">00</div><div class="count-lbl">soat</div></div>
+      <div class="count-circle"><div class="count-val" id="minutes">00</div><div class="count-lbl">daqiqa</div></div>
+      <div class="count-circle"><div class="count-val" id="seconds">00</div><div class="count-lbl">soniya</div></div>
+    </div>
+  </section>
+
+  <!-- Lokatsiya -->
+  <section class="panel">
+    <div class="eyebrow-sm">LOKATSIYA</div>
+    <h2>Sizni kutamiz</h2>
+    <div class="detail-label">TO'YXONA</div>
+    <div class="detail-value">"Visol" Muhtasham Tantanalar Saroyi</div>
+    <div class="detail-label">MANZIL</div>
+    <div class="detail-value" style="margin-bottom:22px;">Buxoro viloyati, Shofirkon tumani</div>
+    <a href="https://maps.app.goo.gl/miqrH1k2jMxrQp8TA" target="_blank" class="pill-btn">
+      <svg viewBox="0 0 24 24"><path d="M12 21s7-7.2 7-12a7 7 0 1 0-14 0c0 4.8 7 12 7 12Z"/><circle cx="12" cy="9" r="2.4"/></svg>
+      Xaritada ochish
+    </a>
+  </section>
+
+  <!-- Kun tartibi -->
+  <section class="panel">
+    <div class="eyebrow-sm">DASTUR</div>
+    <h2>Kechaning kun tartibi</h2>
+    <div class="timeline-list">
+      <div class="tl-item"><div class="tl-time">18:00</div><div class="tl-text">Mehmonlarni kutib olish va joylashish</div></div>
+      <div class="tl-item"><div class="tl-time">19:00</div><div class="tl-text">Kelin-kuyovning kelishi va nikoh marosimi</div></div>
+      <div class="tl-item"><div class="tl-time">20:00</div><div class="tl-text">Tabriklar, tostlar va bayramona dastur</div></div>
+      <div class="tl-item"><div class="tl-time">23:00</div><div class="tl-text">Kechaning yakuni</div></div>
+    </div>
+  </section>
+
+  <!-- Xat -->
+  <section class="panel">
+    <svg class="dove-divider" viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
+      <path d="M20 40 C28 30 34 24 34 16 C34 10 30 6 25 7 C22 8 20 11 20 14 C20 11 18 8 15 7 C10 6 6 10 6 16 C6 26 14 32 20 40Z" fill="#C6577A" opacity="0.85"/>
+      <path d="M50 6 C40 6 32 14 32 24 C32 38 50 52 50 52 C50 52 68 38 68 24 C68 14 60 6 50 6Z" fill="none" stroke="#C79A56" stroke-width="1.2"/>
+      <path d="M80 40 C88 30 94 24 94 16 C94 10 90 6 85 7 C82 8 80 11 80 14 C80 11 78 8 75 7 C70 6 66 10 66 16 C66 26 74 32 80 40Z" fill="#C6577A" opacity="0.85"/>
+    </svg>
+    <p style="font-family:'Cormorant Garamond', serif; font-style:italic; font-size:17px; color:var(--wine); line-height:1.7;">
+      Hurmatli mehmon, hayotimizning eng baxtli kunlaridan biri yaqinlashmoqda. Sizni o'sha kunda baxtimizga sherik bo'lishga, quvonchimizni baham ko'rishga chorlaymiz. Sizni to'yimizning bayram dasturxonida ko'rishdan mamnun bo'lamiz!
+    </p>
+    <div class="divider-line"></div>
+    <div style="font-family:'Cormorant Garamond', serif; font-style:italic; font-size:16px; color:var(--rose);">Hurmat bilan, Farrux &amp; Sevora</div>
+  </section>
+
+  <!-- RSVP -->
+  <section class="panel">
+    <div class="eyebrow-sm">TASDIQLASH</div>
+    <h2>Tashrifingizni tasdiqlang</h2>
+    <p>Iltimos, quyidagi variantlardan birini tanlang</p>
+    <div class="rsvp-options">
+      <label class="rsvp-opt"><input type="radio" name="rsvp" value="yolgiz"><span>Ha, albatta boraman</span></label>
+      <label class="rsvp-opt"><input type="radio" name="rsvp" value="oila"><span>Turmush o'rtog'im / oilam bilan boraman</span></label>
+      <label class="rsvp-opt"><input type="radio" name="rsvp" value="yoq"><span>Afsuski, bora olmayman</span></label>
+    </div>
+    <button class="solid-btn" onclick="openTelegram()">
+      Javob yuborish
+      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#fff" stroke-width="1.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </button>
+  </section>
+
+  <!-- Tilak -->
+  <section class="panel">
+    <div class="eyebrow-sm">TILAK</div>
+    <h2>Bizga ezgu tilak qoldiring</h2>
+    <p>So'zlaringiz biz uchun bu kunni yanada qadrli qiladi</p>
+    <textarea class="wish-input" placeholder="Tilagingizni shu yerga yozing..."></textarea>
+    <div style="height:14px;"></div>
+    <button class="solid-btn" onclick="openTelegram()">
+      Tilak yuborish
+      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#fff" stroke-width="1.8"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7Z"/></svg>
+    </button>
+  </section>
+
+  <!-- Share -->
+  <section class="panel">
+    <div class="eyebrow-sm">ULASHISH</div>
+    <h2>Yaqinlaringiz bilan baham ko'ring</h2>
+    <p>Ushbu taklifnomani yaqinlaringiz va do'stlaringiz bilan ulashing</p>
+    <div style="height:6px;"></div>
+    <button class="pill-btn" onclick="shareInvite()" style="margin:0 auto;">
+      <svg viewBox="0 0 24 24"><path d="M18 8a3 3 0 1 0-2.83-4H15a3 3 0 0 0 .05 3.88L8.9 11.1a3 3 0 1 0 0 5.8l6.15 3.22A3 3 0 1 0 16 18a3 3 0 0 0-.05-.66L9.8 14.12a3 3 0 0 0 0-2.24l6.14-3.22c.5.32 1.05.34 1.06.34"/></svg>
+      Taklifnomani ulashish
+    </button>
+  </section>
+
+  <!-- Footer -->
+  <section class="panel">
+    <svg class="rings-svg" viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="38" cy="28" r="16" fill="none" stroke="#C79A56" stroke-width="4"/>
+      <circle cx="58" cy="28" r="16" fill="none" stroke="#C79A56" stroke-width="4"/>
+      <path d="M20 48 C26 42 34 42 38 46 C34 40 36 34 42 32 C36 34 30 38 28 44 C24 40 18 42 16 48 C14 44 8 44 6 48" stroke="#C6577A" stroke-width="1.4" fill="none"/>
+    </svg>
+    <p style="margin-bottom:16px;">Siz ham shunga o'xshash chiroyli taklifnoma sayti buyurtma qilmoqchimisiz?</p>
+    <button class="solid-btn" onclick="openTelegram()">Sayt taklifnomaga buyurtma berish</button>
+    <div class="credit">Made by Karakhujayev Anaskhon</div>
+  </section>
+
+</main>
+
+<button class="music-btn" id="musicToggle" aria-label="Musiqani yoqish/o'chirish">
+  <svg class="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+  <svg class="icon-pause" viewBox="0 0 24 24"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+</button>
+
+<script>
+  // ---------- Telegram redirect ----------
+  function openTelegram(){
+    window.open('https://t.me/anaskhon1', '_blank');
+  }
+
+  function shareInvite(){
+    if(navigator.share){
+      navigator.share({ title: "Farrux & Sevora — To'y taklifnomasi", url: window.location.href }).catch(()=>{});
+    }else{
+      navigator.clipboard && navigator.clipboard.writeText(window.location.href);
+      alert("Havola nusxalandi!");
+    }
+  }
+
+  // ---------- Names & date ----------
+  let targetDate = new Date('2026-10-15T18:00:00');
+
+  async function loadData(){
+    try{
+      const namesRes = await fetch('ismlar.txt');
+      if(namesRes.ok){
+        const raw = (await namesRes.text()).trim();
+        const parts = raw.split('&').map(s=>s.trim()).filter(Boolean);
+        if(parts.length===2){
+          document.getElementById('lockNames').innerHTML = `${parts[0]}<span class="lock-amp">&amp;</span>${parts[1]}`;
+          document.getElementById('ownerLine').textContent = `${parts[0]} & ${parts[1]}`;
+        }
+      }
+    }catch(e){}
+
+    try{
+      const dateRes = await fetch('sana.txt');
+      if(dateRes.ok){
+        const raw = (await dateRes.text()).trim();
+        const parsed = new Date(raw.replace(' ','T'));
+        if(!isNaN(parsed)){
+          targetDate = parsed;
+          const dd = String(parsed.getDate()).padStart(2,'0');
+          const mm = String(parsed.getMonth()+1).padStart(2,'0');
+          const hh = String(parsed.getHours()).padStart(2,'0');
+          const min = String(parsed.getMinutes()).padStart(2,'0');
+          document.getElementById('lockDate').textContent = `${dd} · ${mm} · ${parsed.getFullYear()}`;
+          document.getElementById('dateTimeDisplay').textContent = `${dd}.${mm}.${parsed.getFullYear()} / soat ${hh}:${min}`;
+        }
+      }
+    }catch(e){}
+  }
+  loadData();
+
+  // ---------- Countdown ----------
+  function updateTimer(){
+    const diff = targetDate - new Date();
+    const set = (id,val) => document.getElementById(id).textContent = String(Math.max(val,0)).padStart(2,'0');
+    if(diff > 0){
+      set('days', Math.floor(diff/86400000));
+      set('hours', Math.floor(diff/3600000)%24);
+      set('minutes', Math.floor(diff/60000)%60);
+      set('seconds', Math.floor(diff/1000)%60);
+    }else{
+      ['days','hours','minutes','seconds'].forEach(id=>set(id,0));
+    }
+  }
+  updateTimer();
+  setInterval(updateTimer, 1000);
+
+  // ---------- Audio ----------
+  const audio = document.getElementById('bgAudio');
+  const musicBtn = document.getElementById('musicToggle');
+  musicBtn.addEventListener('click', () => {
+    if(audio.paused){ audio.play(); musicBtn.classList.add('playing'); }
+    else{ audio.pause(); musicBtn.classList.remove('playing'); }
+  });
+
+  // ---------- Slide to unlock ----------
+  const track = document.getElementById('slideTrack');
+  const handle = document.getElementById('slideHandle');
+  const lockScreen = document.getElementById('lockScreen');
+  const page = document.getElementById('page');
+  let dragging = false, startX = 0, currentX = 0;
+  const maxX = () => track.clientWidth - handle.clientWidth - 8;
+
+  function unlockExperience(){
+    handle.style.transition = 'left .2s ease';
+    handle.style.left = maxX() + 'px';
+    lockScreen.classList.add('hidden');
+    page.classList.add('show');
+    audio.play().catch(()=>{});
+    musicBtn.classList.add('playing');
+    setTimeout(startAutoScroll, 2600);
+  }
+
+  function pointerDown(e){
+    dragging = true;
+    startX = (e.touches ? e.touches[0].clientX : e.clientX) - handle.offsetLeft;
+    handle.style.transition = 'none';
+  }
+  function pointerMove(e){
+    if(!dragging) return;
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    currentX = Math.min(Math.max(clientX - startX, 4), maxX());
+    handle.style.left = currentX + 'px';
+    if(currentX >= maxX() - 4){
+      dragging = false;
+      unlockExperience();
+    }
+  }
+  function pointerUp(){
+    if(!dragging) return;
+    dragging = false;
+    if(currentX < maxX() - 4){
+      handle.style.transition = 'left .3s ease';
+      handle.style.left = '4px';
+    }
+  }
+
+  handle.addEventListener('mousedown', pointerDown);
+  handle.addEventListener('touchstart', pointerDown, {passive:true});
+  window.addEventListener('mousemove', pointerMove);
+  window.addEventListener('touchmove', pointerMove, {passive:true});
+  window.addEventListener('mouseup', pointerUp);
+  window.addEventListener('touchend', pointerUp);
+  track.addEventListener('click', (e) => { if(e.target === track || e.target.classList.contains('slide-label')) unlockExperience(); });
+
+  // ---------- Gentle auto-scroll (starts 2-3s after unlock, cancels on user input) ----------
+  let autoScrollActive = false;
+  function startAutoScroll(){
+    autoScrollActive = true;
+    function step(){
+      if(!autoScrollActive) return;
+      if(window.innerHeight + window.scrollY >= document.body.scrollHeight - 2){
+        autoScrollActive = false;
+        return;
+      }
+      window.scrollBy(0, 0.6);
+      requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  ['wheel','touchstart','keydown','pointerdown'].forEach(evt => {
+    window.addEventListener(evt, () => { autoScrollActive = false; }, {passive:true});
+  });
+
+  // ---------- Ambient falling petals ----------
+  const canvas = document.getElementById('petals');
+  const ctx = canvas.getContext('2d');
+  function resize(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  window.addEventListener('resize', resize);
+  resize();
+
+  const petals = Array.from({length:14}, () => ({
+    x: Math.random()*canvas.width,
+    y: Math.random()*canvas.height,
+    r: Math.random()*3.5+3,
+    sway: Math.random()*1.2+0.4,
+    speed: Math.random()*0.4+0.18,
+    phase: Math.random()*Math.PI*2,
+    opacity: Math.random()*0.35+0.18
+  }));
+
+  function drawPetals(t){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    petals.forEach(p => {
+      const x = p.x + Math.sin(t/1700 + p.phase)*14*p.sway;
+      ctx.globalAlpha = p.opacity;
+      ctx.fillStyle = '#E893AA';
+      ctx.beginPath();
+      ctx.ellipse(x, p.y, p.r, p.r*1.6, Math.PI/4, 0, Math.PI*2);
+      ctx.fill();
+      p.y += p.speed;
+      if(p.y > canvas.height+10){ p.y = -10; p.x = Math.random()*canvas.width; }
+    });
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(drawPetals);
+  }
+  requestAnimationFrame(drawPetals);
+</script>
+</body>
+</html>
