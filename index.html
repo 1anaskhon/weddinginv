@@ -382,7 +382,7 @@
     <div class="detail-value">"Visol" Muhtasham Tantanalar Saroyi</div>
     <div class="detail-label">MANZIL</div>
     <div class="detail-value" style="margin-bottom:22px;">Buxoro viloyati, Shofirkon tumani</div>
-    <a href="https://maps.app.goo.gl/miqrH1k2jMxrQp8TA" target="_blank" class="pill-btn">
+    <a href="https://maps.app.goo.gl/miqrH1k2jMxrQp8TA" target="_blank" id="mapLink" class="pill-btn">
       <svg viewBox="0 0 24 24"><path d="M12 21s7-7.2 7-12a7 7 0 1 0-14 0c0 4.8 7 12 7 12Z"/><circle cx="12" cy="9" r="2.4"/></svg>
       Xaritada ochish
     </a>
@@ -414,29 +414,12 @@
     <div style="font-family:'Cormorant Garamond', serif; font-style:italic; font-size:16px; color:var(--rose);">Hurmat bilan, Farrux &amp; Sevora</div>
   </section>
 
-  <!-- RSVP -->
-  <section class="panel">
-    <div class="eyebrow-sm">TASDIQLASH</div>
-    <h2>Tashrifingizni tasdiqlang</h2>
-    <p>Iltimos, quyidagi variantlardan birini tanlang</p>
-    <div class="rsvp-options">
-      <label class="rsvp-opt"><input type="radio" name="rsvp" value="yolgiz"><span>Ha, albatta boraman</span></label>
-      <label class="rsvp-opt"><input type="radio" name="rsvp" value="oila"><span>Turmush o'rtog'im / oilam bilan boraman</span></label>
-      <label class="rsvp-opt"><input type="radio" name="rsvp" value="yoq"><span>Afsuski, bora olmayman</span></label>
-    </div>
-    <button class="solid-btn" onclick="openTelegram()">
-      Javob yuborish
-      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#fff" stroke-width="1.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-    </button>
-  </section>
-
   <!-- Tilak -->
   <section class="panel">
     <div class="eyebrow-sm">TILAK</div>
     <h2>Bizga ezgu tilak qoldiring</h2>
-    <p>So'zlaringiz biz uchun bu kunni yanada qadrli qiladi</p>
-    <textarea class="wish-input" placeholder="Tilagingizni shu yerga yozing..."></textarea>
-    <div style="height:14px;"></div>
+    <p>O'z samimiy tilaklaringizni, duo va yaxshi niyatlaringizni pastdagi tugma orqali bizga yuboring — har bir so'zingiz biz uchun qadrlidir.</p>
+    <div style="height:6px;"></div>
     <button class="solid-btn" onclick="openTelegram()">
       Tilak yuborish
       <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#fff" stroke-width="1.8"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7Z"/></svg>
@@ -476,9 +459,29 @@
 
 <script>
   // ---------- Telegram redirect ----------
+  let telegramLink = 'https://t.me/anaskhon1';
   function openTelegram(){
-    window.open('https://t.me/anaskhon1', '_blank');
+    window.open(telegramLink, '_blank');
   }
+
+  async function loadLinks(){
+    try{
+      const tgRes = await fetch('telegram.txt');
+      if(tgRes.ok){
+        const raw = (await tgRes.text()).trim();
+        if(raw) telegramLink = raw;
+      }
+    }catch(e){}
+
+    try{
+      const locRes = await fetch('lokatsiya.txt');
+      if(locRes.ok){
+        const raw = (await locRes.text()).trim();
+        if(raw) document.getElementById('mapLink').setAttribute('href', raw);
+      }
+    }catch(e){}
+  }
+  loadLinks();
 
   function shareInvite(){
     if(navigator.share){
